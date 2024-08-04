@@ -10,6 +10,9 @@ class Document extends Model
 {
     use HasFactory;
 
+    const MAX_CONTENT_LENGTH = 5000;
+    const SEMESTER = 'semestre';
+
     protected $fillable = [
         'category_id',
         'title',
