@@ -26,6 +26,14 @@ class DocumentRequest extends FormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'json_file.required' => 'O arquivo deve ser informado!',
+            'json_file.mimetypes' => 'O arquivo deve ser um JSON!',
+        ];
+    }
+
     public function withValidator($validator)
     {
         // Podemos fazer uma validação avançada no json aqui mas mantive uma validação simples nas rules
