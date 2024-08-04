@@ -14,6 +14,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class ProcessDocument implements ShouldQueue
 {
@@ -49,11 +51,20 @@ class ProcessDocument implements ShouldQueue
 
         $category = Category::getByName($this->document['categoria']);
 
-        Document::create([
-            'category_id' => $category->id,
-            'title' => $this->document['titulo'],
-            'contents' => $this->document['conteúdo']
-        ]);
+        DB::beginTransaction();
+
+        try {
+            Document::create([
+                'category_id' => $category->id,
+                'title' => $this->document['titulo'],
+                'contents' => $this->document['conteúdo']
+            ]);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception('Erro ao criar documento: ' . $e->getMessage());
+        }
 
         Log::info('Documento processado com sucesso!', ['document' => $this->document]);
     }

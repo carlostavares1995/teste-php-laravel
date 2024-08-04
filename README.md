@@ -96,12 +96,24 @@ Execute as migrations e as seeds
 php artisan migrate --seed
 ```
 
+Execute os testes caso necessário (opcional)
+
+```sh
+php artisan test
+```
+
+Deixe as queues rodando
+
+```sh
+php artisan queue:work
+```
+
 Acesse o projeto
 [http://localhost:8181](http://localhost:8181)
 
 ### Observações e pensamentos:
 
-1. Esquema SQLite: Não é necessário manter o arquivo 'sqlite-schema.sql', pois o Laravel já gerencia a criação e o histórico das tabelas através das migrations. Vou manter apenas as tabelas essenciais para o desafio e considerar melhorias adicionais posteriormente.
+1. Esquema SQLite: Não é necessário manter o arquivo 'sqlite-schema.sql', pois o Laravel já gerencia a criação e o histórico das tabelas através das migrations. Vou manter apenas as tabelas essenciais para o desafio e considerar melhorias adicionais posteriormente. (OBS: Caso o projeto fosse grande faria sentido utilizar o schema:dump) 
 
 2. Organização das migrations: As migrations foram organizadas de forma mais lógica.
 
@@ -146,3 +158,5 @@ Acesse o projeto
 21. Existem duas formas de validar os dados do json antes de salvar na fila ou durante a execução. Decidi deixar as validações para a execução da fila, mas isso depende de quanto a aplicação está disposta a processar os dados antes de enviá-los para a fila.
 
 22. Enviei os documentos um a um para a fila para aumentar a capacidade de escala e deixar os dados mais granulados. Em alguns casos, podemos optar por enviar o array inteiro, melhorando um pouco a performance, mas com menos controle sobre sua execução.
+
+23. Como o projeto e pequeno optei por não usar DTO.
