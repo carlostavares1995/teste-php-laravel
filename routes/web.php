@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DocumentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// --> Rota criada em / apenas para facilitar o uso
+Route::get('/', [DocumentController::class, 'show'])->name('document.show');
+
+Route::prefix('document')->name('document.')->group(function () {
+    Route::get('/', [DocumentController::class, 'show'])->name('show');
+    Route::post('/', [DocumentController::class, 'upload'])->name('upload');
+    Route::get('/process', [DocumentController::class, 'process'])->name('process');
 });
