@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\DocumentDTO;
 use App\Models\Document;
 use App\Services\TitleValidatorContext;
 
@@ -9,6 +10,11 @@ class DocumentValidator
 {
     public function __construct(protected array $validators)
     {
+    }
+
+    public function validateMissingField(DocumentDTO $documentDTO): bool
+    {
+        return !is_null($documentDTO->category) && !is_null($documentDTO->title) && !is_null($documentDTO->contents);
     }
 
     public function validateContentLength(string $content): bool

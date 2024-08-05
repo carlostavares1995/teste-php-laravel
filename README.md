@@ -113,7 +113,7 @@ Acesse o projeto
 
 ### Observações e pensamentos:
 
-1. Esquema SQLite: Não é necessário manter o arquivo 'sqlite-schema.sql', pois o Laravel já gerencia a criação e o histórico das tabelas através das migrations. Vou manter apenas as tabelas essenciais para o desafio e considerar melhorias adicionais posteriormente. (OBS: Caso o projeto fosse grande faria sentido utilizar o schema:dump) 
+1. Esquema SQLite: Não é necessário manter o arquivo 'sqlite-schema.sql', pois o Laravel já gerencia a criação e o histórico das tabelas através das migrations. Vou manter apenas as tabelas essenciais para o desafio e considerar melhorias adicionais posteriormente. (OBS: Caso o projeto fosse grande faria sentido utilizar o schema:dump)
 
 2. Organização das migrations: As migrations foram organizadas de forma mais lógica.
 
@@ -141,7 +141,7 @@ Acesse o projeto
 
 13. Em uma situação real, não seria necessário criar um botão para processar a fila, pois o correto seria configurar o worker do job no Supervisor. No entanto, criei o botão utilizando Artisan::call, conforme solicitado.
 
-14. Percebi que o desafio está mais relacionado ao Laravel, então estou utilizando o padrão de queue e job junto com o Redis. No entanto, se fosse necessário isolar as filas, podemos utilizar um bucket do SQS. E em casos onde um evento necessite de múltiplas interações, podemos criar um tópico no SNS antes do SQS para distribuir essas ações.
+14. Percebi que o desafio está mais relacionado ao Laravel, então estou utilizando o padrão de queue e job juntamente com os events e listeners, e integrando com o Redis. Em situações diferentes, poderíamos considerar o uso do SQS em conjunto com o SNS, ou até mesmo explorar opções como RabbitMQ ou Apache Kafka.
 
 15. Seria interessante configurar um ambiente de observabilidade para monitorar a aplicação e suas jobs, como por exemplo o New Relic ou o OpenTelemetry, porém neste caso seria necessário mais configurações, e posteriormente definir alguns alertas de monitoramento. No entanto, deixarei isso para um próximo desafio.
 
@@ -159,4 +159,4 @@ Acesse o projeto
 
 22. Enviei os documentos um a um para a fila para aumentar a capacidade de escala e deixar os dados mais granulados. Em alguns casos, podemos optar por enviar o array inteiro, melhorando um pouco a performance, mas com menos controle sobre sua execução.
 
-23. Como o projeto e pequeno optei por não usar DTO.
+23. Realizei apenas os testes de validação solicitados. No entanto, poderíamos ter explorado outros tipos de testes, como testes de integração para validar as rotas, ou até mesmo utilizar mocks, como o Queue::fake(), para testar as jobs.

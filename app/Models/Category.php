@@ -11,9 +11,6 @@ class Category extends Model
 {
     use HasFactory;
 
-    const SHIPPING = 'Remessa';
-    const PARTIAL_SHIPMENT = 'Remessa Parcial';
-
     protected $fillable = [
         'name',
     ];

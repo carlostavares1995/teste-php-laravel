@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Category;
+use App\Enums\CategoryType;
 use App\Services\DocumentValidator;
 use App\Validators\PartialShippingTitleValidator;
 use App\Validators\ShippingTitleValidator;
@@ -17,8 +17,8 @@ class DocumentValidatorServiceProvider extends ServiceProvider
     {
         $this->app->singleton(DocumentValidator::class, function ($app) {
             $validators = [
-                Category::SHIPPING => new ShippingTitleValidator(),
-                Category::PARTIAL_SHIPMENT => new PartialShippingTitleValidator(),
+                CategoryType::SHIPPING->value => new ShippingTitleValidator(),
+                CategoryType::PARTIAL_SHIPMENT->value => new PartialShippingTitleValidator(),
             ];
 
             return new DocumentValidator($validators);

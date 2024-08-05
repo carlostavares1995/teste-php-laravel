@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Carbon\Carbon;
 use App\Models\Category;
+use App\Enums\CategoryType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -31,7 +32,7 @@ class DocumentFactory extends Factory
     public function shippingCategory(): Factory
     {
         return $this->state(function (array $attributes) {
-            $category = Category::getByName(Category::SHIPPING);
+            $category = Category::getByName(CategoryType::SHIPPING->value);
 
             return [
                 'category_id' => $category->id,
@@ -43,7 +44,7 @@ class DocumentFactory extends Factory
     public function partialShipmentCategory(): Factory
     {
         return $this->state(function (array $attributes) {
-            $category = Category::getByName(Category::PARTIAL_SHIPMENT);
+            $category = Category::getByName(CategoryType::PARTIAL_SHIPMENT->value);
 
             return [
                 'category_id' => $category->id,

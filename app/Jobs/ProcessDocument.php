@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\DTO\DocumentDTO;
 use App\Exceptions\ContentLengthExceededException;
 use App\Exceptions\InvalidTitleException;
 use App\Exceptions\MissingRequiredFieldsException;
@@ -25,7 +26,7 @@ class ProcessDocument implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        protected array $document,
+        protected DocumentDTO $documentDTO,
         protected DocumentValidator $validator
     ) {
     }
@@ -35,29 +36,27 @@ class ProcessDocument implements ShouldQueue
      */
     public function handle(): void
     {
-        $requiredFields = ['categoria', 'titulo', 'conteúdo'];
-        $missingFields = array_diff($requiredFields, array_keys($this->document));
-        if (!empty($missingFields)) {
+        if (!$this->validator->validateMissingField($this->documentDTO)) {
             throw new MissingRequiredFieldsException();
         }
 
-        if (!$this->validator->validateContentLength($this->document['conteúdo'])) {
+        if (!$this->validator->validateContentLength($this->documentDTO->contents)) {
             throw new ContentLengthExceededException();
         }
 
-        if (!$this->validator->validateTitleByCategory($this->document['categoria'], $this->document['titulo'])) {
+        if (!$this->validator->validateTitleByCategory($this->documentDTO->category, $this->documentDTO->title)) {
             throw new InvalidTitleException();
         }
 
-        $category = Category::getByName($this->document['categoria']);
+        $category = Category::getByName($this->documentDTO->category);
 
         DB::beginTransaction();
 
         try {
             Document::create([
                 'category_id' => $category->id,
-                'title' => $this->document['titulo'],
-                'contents' => $this->document['conteúdo']
+                'title' => $this->documentDTO->title,
+                'contents' => $this->documentDTO->contents,
             ]);
 
             DB::commit();
@@ -66,6 +65,6 @@ class ProcessDocument implements ShouldQueue
             throw new Exception('Erro ao criar documento: ' . $e->getMessage());
         }
 
-        Log::info('Documento processado com sucesso!', ['document' => $this->document]);
+        Log::info('Documento processado com sucesso!', ['document' => $this->documentDTO]);
     }
 }

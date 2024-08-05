@@ -21,4 +21,5 @@ Route::prefix('document')->name('document.')->group(function () {
     Route::get('/', [DocumentController::class, 'show'])->name('show');
     Route::post('/', [DocumentController::class, 'upload'])->name('upload');
     Route::get('/process', [DocumentController::class, 'process'])->name('process');
+    Route::get('/list', [DocumentController::class, 'documentList'])->name('list');
 });
